@@ -1,5 +1,6 @@
 import * as React from "react";
 import { List, 
+    Filter,
     Datagrid, 
     TextField, 
     ReferenceField, 
@@ -11,8 +12,18 @@ import { List,
     SelectInput,
     TextInput, } from 'react-admin';
 
+// Helper Component for Filtered searching on PostList
+const PostFilter = (props) => (
+        <Filter {...props}>
+            <TextInput label="Search" source="q" alwaysOn />
+            <ReferenceInput label="User" source="userId" reference="users" allowEmpty>
+                <SelectInput optionText="name" />
+            </ReferenceInput>
+        </Filter>
+    );
+
 export const PostList = props => (
-    <List {...props}>
+    <List filters={<PostFilter />}{...props}>
        <Datagrid>
            <TextField source="id" />
 {/* ReferenceField simply fetchs refernce data as passes it as record to its children */}
@@ -25,8 +36,13 @@ export const PostList = props => (
     </List>
 );
 
+// Helper Component to add title to top of Edit page
+const PostTitle = ({ record }) => {
+        return <span>Post {record ? `"${record.title}"` : ''}</span>;
+    };
+
 export const PostEdit = props => (
-    <Edit {...props}>
+    <Edit title={<PostTitle />}{...props}>
         <SimpleForm>
         <TextInput disabled source="id" />
             <ReferenceInput source="userId" reference="users">
