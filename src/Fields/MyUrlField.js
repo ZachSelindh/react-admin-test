@@ -2,6 +2,7 @@ import * as React from "react";
 import { makeStyles } from '@material-ui/core/styles';
 import LaunchIcon from '@material-ui/icons/Launch';
 
+// useStyles is a hook made by the makeStyles method from MaterialUI
 const useStyles = makeStyles({
     link: {
         textDecoration: 'none',
@@ -12,7 +13,7 @@ const useStyles = makeStyles({
     },
 });
 
-const MyUrlField = ({ record = {}, source }) => {
+const MyUrlField = ({record = {}, source }) => {
     // classes is derived from the makeStyles method input object
     const classes = useStyles();
     return (
