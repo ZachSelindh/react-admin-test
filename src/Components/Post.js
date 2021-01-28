@@ -5,6 +5,7 @@ import { List,
     ReferenceField, 
     EditButton,
     Edit,
+    Create,
     SimpleForm,
     ReferenceInput,
     SelectInput,
@@ -35,4 +36,16 @@ export const PostEdit = props => (
             <TextInput multiline source="body" />
         </SimpleForm>
     </Edit>
+);
+
+export const PostCreate = props => (
+    <Create {...props}>
+        <SimpleForm>
+            <ReferenceInput source="userId" reference="users">
+                <SelectInput optionText="name" />
+                </ReferenceInput>
+            <TextInput source="title" />
+            <TextInput multiline source="body" />
+        </SimpleForm>
+    </Create>
 );
