@@ -1,5 +1,6 @@
 import * as React from "react";
 import { List, 
+    SimpleList,
     Filter,
     Datagrid, 
     TextField, 
@@ -12,6 +13,8 @@ import { List,
     SelectInput,
     TextInput, } from 'react-admin';
 
+import { useMediaQuery } from '@material-ui/core';
+
 // Helper Component for Filtered searching on PostList
 const PostFilter = (props) => (
         <Filter {...props}>
@@ -22,19 +25,31 @@ const PostFilter = (props) => (
         </Filter>
     );
 
-export const PostList = props => (
-    <List filters={<PostFilter />}{...props}>
-       <Datagrid>
-           <TextField source="id" />
-{/* ReferenceField simply fetchs refernce data as passes it as record to its children */}
-            <ReferenceField source="userId" reference="users">
-                <TextField source="name" />
-            </ReferenceField>
-            <TextField source="title" />
-           <EditButton />
-        </Datagrid>
-    </List>
-);
+export const PostList = (props) => {
+    const isSmall = useMediaQuery(theme => theme.breakpoints.down('sm'));
+    return (
+        <List filters={<PostFilter/>} {...props}>
+            {isSmall ? (
+                <SimpleList
+                    primaryText={record => record.title}
+                    secondaryText={record => `${record.views} views`}
+                    tertiaryText={record => new Date(record.published_at).toLocaleDateString()}
+                />
+            ) : (
+                <Datagrid>
+                    <TextField source="id" />
+                    {/* ReferenceField simply fetchs reference data as passes it as record to its children */}
+                    <ReferenceField label="User" source="userId" reference="users">
+                        <TextField source="name" />
+                    </ReferenceField>
+                    <TextField source="title" />
+                    <TextField source="body" />
+                    <EditButton />
+                </Datagrid>
+            )}
+        </List>
+    );
+}
 
 // Helper Component to add title to top of Edit page
 const PostTitle = ({ record }) => {
